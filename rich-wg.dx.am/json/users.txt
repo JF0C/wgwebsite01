@@ -1,0 +1,1 @@
+[{"Id":"4","Name":"Admin","Token":"9ed1515819dec61fd361d5fdabb57f41ecce1a5fe1fe263b98c0d6943b9b232e","Mail":"jan4beer@web.de","Permissions":"site_admin beer karma beer_admin shoppingList","BrowsePosition":"3","Theme":"dark","Notifications":""}]
