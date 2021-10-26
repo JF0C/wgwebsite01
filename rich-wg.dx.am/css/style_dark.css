@@ -1,0 +1,140 @@
+body{
+	color:white;
+}
+.list-element{
+	background: black;
+	border: 1px solid black;
+}
+.highlighted{
+	background: #b58f06;
+	border: 1px solid #b58f06;
+}
+.highlighted:active{
+	background: #f8c92b;
+}
+.menu-level-1{
+	border: 1px solid white;
+}
+#title-bar{
+	border-bottom: 1px solid white;
+	background: #3c3c3c;
+}
+#main-frame{
+	background: dimgrey;
+}
+.inactive-success{
+	background: #b58f06;
+}
+.modify-entries-acive{
+	background: #b58f06;
+}
+.bottom-menu-button{
+	background: #3c3c3c;
+}
+.bottom-menu-button.active{
+	background: #b58f06;
+}
+#bottom-menu-selector{
+	background: #3c3c3c;
+	border-top: 1px solid white;
+}
+#back-navigator:active{
+	background: #b58f06;
+}
+.suggestion-dropdown{
+	border-color: white;
+	background: black;
+}
+.dropdown-element:hover{
+	background: #b58f06;
+}
+input:focus{
+	outline: none;
+	background: #b58f06;
+	color: white;
+}
+input[type=file]{
+	background: #3c3c3c;
+}
+input[type=file]:active{
+	background: #b58f06;
+}
+.karma-amount{
+	border:1px solid white;
+}
+.karma-name{
+	border:1px solid #b58f06;
+}
+.edit-input{
+	border: 1px solid #b58f06;
+}
+.info-board{
+	border-top: 1px solid white;
+	border-bottom: 1px solid white;
+	background: #3c3c3c;
+}
+
+.button:active{
+	background: #b58f06;
+}
+#newprodcost{
+	border: 1px solid white;
+}
+#newprodname{
+	border: 1px solid white;
+}
+.disable-drink-button{
+	border: 1px solid white;
+}
+.disable-drink-button:active{
+	background: #b58f06;
+}
+#payment-submit-button{
+	border: 1px solid white;
+}
+#payment-submit-button:active{
+	background: #b58f06;	
+}
+.clickable:active{
+	background: #b58f06;
+}
+.button3{
+	border: 1px solid white;
+}
+.filter-input{
+	border: 1px solid white;
+}
+#search-field{
+	border-bottom: 1px solid white;
+}
+.list-element-toggle{
+    border: 2px solid white;
+    background: black;
+}
+.list-element-toggle-indicator{
+    background: #b58f06;
+}
+.list-element-inactive:active{
+	background: black;
+}
+.unfinished-balance{
+	background: indianred;
+}
+.drink-name{
+	border-color: white;
+}
+.fraction-selector{
+	border-color: white;
+}
+.fraction-selector-container{
+	border-color: white;
+}
+.fraction-selector.highlighted{
+	border-color: white;
+}
+.moveablehandle{
+	border-color: white;
+}
+.radio3.active{
+	background: #b58f06;
+}

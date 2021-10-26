@@ -1,0 +1,1 @@
+karma site_admin beer beer_admin shoppingList

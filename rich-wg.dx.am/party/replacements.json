@@ -1,0 +1,15 @@
+{
+    "date": {"DE": "23/24.10.2020 ab 15:00", "EN": "10-23-2020/10-24-2020 starting at 3pm"},
+    "accept": {"DE": "zusagen", "EN": "accept"},
+    "decline": {"DE": "absagen", "EN": "decline"},
+    "openv": {"DE": "Du hast noch keine Angabe gemacht.", "EN": "You have not responded yet."},
+    "open": {"DE": "offen", "EN": "open"},
+    "acceptedv": {"DE": "Du hast zugesagt. Schau bald wieder nach, um eine Bestätigung für Deine Teilnahme zu erhalten", "EN": "You have accepted the invitation. Come back soon, to get a confirmation for your participation."},
+    "accepted": {"DE": "zugesagt", "EN": "you accepted"},
+    "confirmedv": {"DE": "Du hast zugesagt! Wir freuen uns dich bald bei uns zu begrüßen!", "EN": "You have accepted! We are looking forward to meeting you at our place!"},
+    "confirmed": {"DE": "Du nimmst Teil", "EN": "you participate"},
+    "declinedv": {"DE": "Du hast abgelehnt. Falls du wieder in die Liste der Nachrücker aufgenommen werden willst, kannst du erneut zusagen.", "EN": "You have declined. If you want to be included in the waiting list you can accept again."},
+    "declined": {"DE": "abgelehnt", "EN": "declined"},
+    "requeuedv": {"DE": "Falls wieder Plätze frei werden, wirst Du wieder zur Party angenommen.", "EN": "If we can accomodate more people, You will be accepted."},
+    "requeued": {"DE": "Warteliste", "EN": "queueuing"}
+}
