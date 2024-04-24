@@ -1,1 +1,1 @@
-karma site_admin beer beer_admin shoppingList
+karma site_admin beer beer_admin shoppingList tour_admin

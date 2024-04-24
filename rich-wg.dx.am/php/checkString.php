@@ -26,10 +26,11 @@ function checkString($str, $more=[]){
   for($k=0; $k < JS_StringLength($str); $k++) {
     $c = JS_charCodeAt($str, $k);
     if($c >= 48 and $c <= 57) continue; //0-9
-    if($c >= 97 and $c <= 122) continue;
-    if($c >= 65 and $c <= 90) continue;
-    if($c >= 44 and $c <= 46) continue;
-    if($c == 95 or $c == 228 or $c == 246 or $c == 252 or $c == 196 or $c == 214 or $c == 220 or $c == 223) continue;
+    if($c >= 97 and $c <= 122) continue; //a-z
+    if($c >= 65 and $c <= 90) continue; //A-Z
+    if($c >= 44 and $c <= 46) continue; //,-.
+    // _ ä ö ü Ä Ö Ü ß %
+    if($c == 95 or $c == 228 or $c == 246 or $c == 252 or $c == 196 or $c == 214 or $c == 220 or $c == 223 or $c == 37) continue;
     $checkmore = false;
     for($l = 0; $l < count($more); $l++){
       if($c == $more[$l]) $checkmore = true;

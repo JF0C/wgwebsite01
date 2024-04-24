@@ -1,0 +1,1 @@
+[{"UserId":"3","Date":"1631988981364","KarmaTaskId":"34"},{"UserId":"1","Date":"1632830015090","KarmaTaskId":"92"},{"UserId":"1","Date":"1632830016181","KarmaTaskId":"87"},{"UserId":"1","Date":"1632830036121","KarmaTaskId":"18"}]

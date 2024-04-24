@@ -58,9 +58,6 @@ function totalDebt(id){
 			if(entry['ProductId'] == -1){
 				debt -= parseFloat(entry['Amount']);
 			}
-			else if(entry['ProductId'] == -2){
-				debt -= parseFloat(entry['Amount']);
-			}
 			else{
 				for(var l = 0; l < products.length; l++){
 					if(products[l]['Id'] == entry['ProductId']){
@@ -646,19 +643,12 @@ function showDebt(){
 		else return 1;
 	});
 
-	for(var k = 0; k < users.length; k++){
-		if(!users[k]['Permissions'].includes('beer')) continue;
-		var u = users[k];
-		let picname = 'profile-pic-' + u['Id'];
-		let picfile = 'Images/' + picname + '.jpg';
-		$('#user-drinks-container').append("<div id='drinks-user-" + u["Id"] + "' class='list-element debt-container'>"+
-				"<div class='image-container' style='float: left;'><img id='" + picname + "' class='profilepic' src='" + picfile + "' /></div>"+
-				"<div class='group-title'>" + u["Name"] +
-				"<img class='open-indicator' src='Icons/chevron-down.svg' />" +
-				"<div id='drinks-user-" + u["Id"] + "-debt' style='display:inline; float:right;'>" + totalDebtFormatted(u["Id"]).replaceAll('Deine ', '').replaceAll('Dein ', '') + "</div>" + "</div>" +
-			"</div>");
-		if(u['Id'] == userid) $('#drinks-user-' + u['Id']).addClass('highlighted');
-		ReplacePic(picname, picfile);
+	addDrinksUser(users.find(u => u.Id == userid));
+
+	for (var k = 0; k < users.length; k++){
+		let user = users[k];
+		if (!user['Permissions'].includes('beer') || user.Id == userid) continue;
+		addDrinksUser(users[k]);
 	}
 
 	ClickableProfilePics();
@@ -710,6 +700,19 @@ function showDebt(){
 	whitenIfDark();
 }
 
+function addDrinksUser(user){
+	let picname = 'profile-pic-' + user['Id'];
+	let picfile = 'Images/' + picname + '.jpg';
+	$('#user-drinks-container').append("<div id='drinks-user-" + user["Id"] + "' class='list-element debt-container'>"+
+			"<div class='image-container' style='float: left;'><img id='" + picname + "' class='profilepic' src='" + picfile + "' /></div>"+
+			"<div class='group-title'>" + user["Name"] +
+			"<img class='open-indicator' src='Icons/chevron-down.svg' />" +
+			"<div id='drinks-user-" + user["Id"] + "-debt' style='display:inline; float:right;'>" + totalDebtFormatted(user["Id"]).replaceAll('Deine ', '').replaceAll('Dein ', '') + "</div>" + "</div>" +
+		"</div>");
+	if(user['Id'] == userid) $('#drinks-user-' + user['Id']).addClass('highlighted');
+	ReplacePic(picname, picfile);
+}
+
 function drinksEntryClick(){
 	//if($('#modify-entries').hasClass('modify-entries-acive')) return;
 	if($(this).hasClass("showdate")){
@@ -737,9 +740,9 @@ function addDrinksHistoryEntry(parent, entry, maxlen=7){
 		}
 	}	
 	if(h['ProductId'] == -1){
-		let payment_type = "Einzahlung";
-		let sign = "+";
-		let amount = parseFloat(h["Amount"]);
+		var payment_type = "Einzahlung";
+		var sign = "+";
+		var amount = parseFloat(h["Amount"]);
 		if(amount < 0){
 			payment_type = "Auszahlung";
 			amount *= -1;
@@ -747,16 +750,6 @@ function addDrinksHistoryEntry(parent, entry, maxlen=7){
 		}
 		parent.append('<div class="list-element drinks-entry drinks-user-' + h["UserId"] + '" data="' + h["Timestamp"] + '" style="display:none;">'+
 			"<div style='display:inline;'>" + payment_type + "</div>"+
-			"<div style='display:inline; float:right;'>" + sign  + formatCost(amount)+ "</div>"+
-			'</div>');
-		return;
-	}
-	if(h['ProductId'] == -2){
-		let amount = parseFloat(h["Amount"]);
-		let sign = '+';
-		if(amount < 0) sign = '';
-		parent.append('<div class="list-element drinks-entry drinks-user-' + h["UserId"] + '" data="' + h["Timestamp"] + '" style="display:none;">'+
-			"<div style='display:inline;'>Kumuliertes Guthaben</div>"+
 			"<div style='display:inline; float:right;'>" + sign  + formatCost(amount)+ "</div>"+
 			'</div>');
 		return;

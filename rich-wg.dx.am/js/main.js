@@ -115,6 +115,9 @@ function showAccount(subpage){
 		$('#dark-theme-toggle-container .list-element-toggle-indicator').addClass('active');
 	}
 	$('#account-root').append('<div class="list-element" id="GpxAnalyser"><div style="display: inline;">GPX Dateien analysieren</div>'+
+		'<div style="float:right;"><img class="chevron" src="Icons/chevron-right.svg"/></div>');
+
+	$('#account-root').append('<div class="list-element" id="TourViewer"><div style="display: inline;">Touren ansehen</div>'+
 		'<div style="float:right;"><img class="chevron" src="Icons/chevron-right.svg"/></div>')
 
 	$('#dark-theme-toggle-container').click(function(e){
@@ -164,6 +167,7 @@ function showAccount(subpage){
 	$('#add-user').click(showNewUser);
 	$('#show-refs').click(showRefs);
 	$('#GpxAnalyser').click(showGpxUploader);
+	$('#TourViewer').click(() => { window.location.href = "http://rich-wg.dx.am/ckcycling.php"; });
 	$('#logout').click(function(){
 		document.cookie="username=0;expires=0";
 		document.cookie="token=0;expires=0";
@@ -292,7 +296,8 @@ function permissionToGerman(permission){
 		case 'shoppingList': return 'Einkaufsliste';
 		case 'beer_admin': return 'Bier Administrator';
 		case 'site_admin': return 'Administrator';
-		default: 'Fehler: Berechtigung nicht gefunden';
+		case 'tour_admin': return 'Tour Administrator';
+		default: return 'Fehler: Berechtigung nicht gefunden';
 	}
 }
 
@@ -1255,7 +1260,7 @@ function selectSubpageKarma(subpage){
 function showKarma(subpage){
 	$('#title-bar-center').html('Karma');
 	$('#title-bar-right').html('<img id="modify-entries" src="Icons/cog-wheel.svg" class="chevron-title"/>');
-	$('#title-bar-left').html('<img id="check-queue" class="check chevron-title" src="Icons/list.svg" />');
+	$('#title-bar-left').html('<img id="check-queue" class="check chevron-title" src="Icons/plus.svg" />');
 	$('#modify-entries').click(editTasks);
 
 	if(selectSubpageKarma(subpage)) return;
@@ -1265,29 +1270,36 @@ function showKarma(subpage){
 	$('#main-frame').append('<div class="list-element highlighted" id="karma-overview">'+
 		'<div id="karma-overview-count" style="display:inline;">Dein Karma: '+totalKarma(userid)+'</div>'+
 		'<div style="display:inline; float: right;"><img class="chevron" src="Icons/chevron-right.svg"/></div></div>');
-	$('#main-frame').append('<div class="list-element" id="todo-list"><div class="group-title-todo" style="display: inline-block; width: 80%;">Aktuelle Aufgaben</div><div style="float: right;" class="badge" id="todo-badge">0</div></div>');
+	//$('#main-frame').append('<div class="list-element" id="todo-list"><div class="group-title-todo" style="display: inline-block; width: 80%;">Aktuelle Aufgaben</div><div style="float: right;" class="badge" id="todo-badge">0</div></div>');
 	$('#main-frame').append('<div class="list-element highlighted" id="balances">'+
 		'<div id="next-balance-date" style="display:inline;">Nächste Abrechnung: ' + millis2date(new Date(balances.find(e=>e['Id'] == -1)['Date']).valueOf()).split(' ')[0] + '</div>'+
 		'<div style="display:inline; float: right;"><img class="chevron" src="Icons/chevron-right.svg"/></div></div>');
 	//$('#main-frame').append('<div class="list-sep"></div>');
-	$('#main-frame').append('<div id="karma-action-info" class="info-board">Karma eintragen</div>');
-	$('#main-frame').append('<div id="search-field">'+
+	$('#main-frame').append('<div id="karma-action-info" class="info-board">Aktuelle Aufgaben</div>');
+	$('#main-frame').append('<div id="open-tasks"></div>');
+
+	$('#main-frame').append('<div id="task-adder" style="display: none;"></div>');
+	$('#task-adder').append('<div id="search-field">'+
 			'<input type="text" id="tasks-filter" class="filter-input search-karma" placeholder="Suchen"/>'+
 			'</div>');
-	$('#main-frame').append('<div id="karma-root-node" name="root"></div>');
+	$('#task-adder').append('<div id="karma-root-node" name="root"></div>');
 
 	$('#balances').click(showKarmaBalances);
 
 	$('#check-queue').click(function(){
 		if($(this).hasClass('check')){
 			$(this).removeClass('check').addClass('queue').addClass('modify-entries-acive');
-			$('.remove-todo').animate({width: 30}, 100);
-			$('#karma-action-info').html('Karma zu Aktuelle Aufgaben hinzufügen');
+			//$('.remove-todo').animate({width: 30}, 100);
+			$('#karma-action-info').html('Karma zu aktuellen Aufgaben hinzufügen');
+			$('#task-adder').css('display', '');
+			$('#open-tasks').css('display', 'none');
 		}
 		else{
 			$(this).removeClass('queue').addClass('check').removeClass('modify-entries-acive');
-			$('.remove-todo').animate({width: 0}, 100);
-			$('#karma-action-info').html('Karma eintragen');
+			//$('.remove-todo').animate({width: 0}, 100);
+			$('#karma-action-info').html('Aktuelle Aufgaben');
+			$('#task-adder').css('display', 'none');
+			$('#open-tasks').css('display', '');
 		}
 	});
 
@@ -1305,7 +1317,7 @@ function showKarma(subpage){
 	for(var task in karmaTasks){
 		addKarmaTask(karmaTasks[task]);
 	}
-	updateTodoList();
+	renderOpenTasks();
 
 	$('.menu-level-0').css({"display": ""});
 	$('.group-title-0').click(function(){
@@ -1376,6 +1388,7 @@ function showKarma(subpage){
 }
 
 function updateTodoList(){
+	return;
 	let ntodo = $('#todo-list').children().length - 2;
 
 	if(ntodo > 0) {
@@ -1430,7 +1443,7 @@ function TaskNodeSendHandler(){
 					for(var k = 0; k < karmaTasks.length; k++){
 						if(karmaTasks[k]['Id'] == taskid){
 							karmaTasks[k]['Todo'] = result["timestamp"];
-							addKarmaTaskToTodo(karmaTasks[k]);
+							renderOpenTasks();
 						}
 					}
 					updateTodoList();
@@ -1878,31 +1891,19 @@ function addKarmaTask(task){
 		}
 		
 	}
-	if(task["Todo"] > 0){
-		addKarmaTaskToTodo(task);
-		ntodo = true;
-	}
 	$('#search-field').append(createTaskNode(task, 'search-field'));
 	whitenIfDark();
 	return ntodo;
 }
 
-function addKarmaTaskToTodo(task){
-	var c = $('#todo-list').children();
-	for(var k = 0; k < c.length; k++){
-		if($(c[k]).attr('data') == task['Id']) return;
+function renderOpenTasks(){
+	$('#open-tasks').html('');
+	for(let t of karmaTasks){
+		if(t.Todo !== undefined && t.Todo !== null && parseInt(t.Todo) > 0){
+			$('#open-tasks').append(createTaskNode(t, "", true));
+		}
 	}
-	var taskhtml = createTaskNode(task, "", true);
-	$('#todo-list').append(taskhtml);
-	if($('#check-queue').hasClass("queue")) {
-		$('.remove-todo').css({'width': '30px'});
-	}
-	$('.remove-todo').off().click(removeTodoSendHandler);
-	$('.task-node').off().click(TaskNodeSendHandler);
-
-	whitenIfDark();
-	// TODO: sort from least recently enterted(top) to most recently entered(bottom)
-	
+	$('#open-tasks').children().css('display','');
 }
 
 function removeKarmaTaskFromTodo(taskid){
