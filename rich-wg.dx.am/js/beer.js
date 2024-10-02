@@ -58,6 +58,9 @@ function totalDebt(id){
 			if(entry['ProductId'] == -1){
 				debt -= parseFloat(entry['Amount']);
 			}
+			else if(entry['ProductId'] == -2){
+				debt -= parseFloat(entry['Amount']);
+			}
 			else{
 				for(var l = 0; l < products.length; l++){
 					if(products[l]['Id'] == entry['ProductId']){
@@ -643,10 +646,10 @@ function showDebt(){
 		else return 1;
 	});
 
+	var usersSorted = users.map(u => {u.debt = totalDebt(u.Id); return u}).sort((a, b) => a.debt < b.debt);
 	addDrinksUser(users.find(u => u.Id == userid));
-
-	for (var k = 0; k < users.length; k++){
-		let user = users[k];
+	for(var k = 0; k < usersSorted.length; k++){
+		let user = usersSorted[k];
 		if (!user['Permissions'].includes('beer') || user.Id == userid) continue;
 		addDrinksUser(users[k]);
 	}
@@ -740,9 +743,9 @@ function addDrinksHistoryEntry(parent, entry, maxlen=7){
 		}
 	}	
 	if(h['ProductId'] == -1){
-		var payment_type = "Einzahlung";
-		var sign = "+";
-		var amount = parseFloat(h["Amount"]);
+		let payment_type = "Einzahlung";
+		let sign = "+";
+		let amount = parseFloat(h["Amount"]);
 		if(amount < 0){
 			payment_type = "Auszahlung";
 			amount *= -1;
@@ -750,6 +753,16 @@ function addDrinksHistoryEntry(parent, entry, maxlen=7){
 		}
 		parent.append('<div class="list-element drinks-entry drinks-user-' + h["UserId"] + '" data="' + h["Timestamp"] + '" style="display:none;">'+
 			"<div style='display:inline;'>" + payment_type + "</div>"+
+			"<div style='display:inline; float:right;'>" + sign  + formatCost(amount)+ "</div>"+
+			'</div>');
+		return;
+	}
+	if(h['ProductId'] == -2){
+		let amount = parseFloat(h["Amount"]);
+		let sign = '+';
+		if(amount < 0) sign = '';
+		parent.append('<div class="list-element drinks-entry drinks-user-' + h["UserId"] + '" data="' + h["Timestamp"] + '" style="display:none;">'+
+			"<div style='display:inline;'>Kumuliertes Guthaben</div>"+
 			"<div style='display:inline; float:right;'>" + sign  + formatCost(amount)+ "</div>"+
 			'</div>');
 		return;

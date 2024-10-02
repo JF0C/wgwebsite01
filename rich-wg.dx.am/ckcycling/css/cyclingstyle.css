@@ -6,6 +6,9 @@ body{
 select{
 	height: 21.5px;
 }
+.w100{
+	width: 100%;
+}
 #map{
 	height: 100%;
 	width: 100%;
@@ -108,4 +111,9 @@ select{
   100% {
     transform: rotate(360deg);
   }
+}
+
+#fullscreen-photo{
+  max-height: 80vh;
+  max-width: 600px;
 }

@@ -12,10 +12,6 @@ function isMobile(){
 	return window.screen.width < 600;
 }
 
-function getCookieVal(cookie){
-	return document.cookie.split(';').find(e=>e.includes(cookie)).replace(" ", "").replace(cookie, "").replace("=", "");
-}
-
 function getRotation(id){
 	if(document.getElementById(id) === null){
 		return;

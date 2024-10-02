@@ -2,6 +2,12 @@ let photoMarkers = [];
 let currentPhoto = null;
 let photoCluster = null;
 
+function loadFotoList() {
+	fetch('http://rich-wg.dx.am/ckcycling/json/photoData.txt')
+		.then(r => r.json())
+		.then(arr => photos = arr);
+}
+
 function uploadControls(){
 	if(user.permissions.includes('tour_admin')){
 		let inp = document.createElement('input');

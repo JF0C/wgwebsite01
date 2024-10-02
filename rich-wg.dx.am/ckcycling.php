@@ -1,19 +1,5 @@
 
 <?php
-	$users = json_decode(file_get_contents("json/users.txt"));
-	$username = $_COOKIE["username"];
-	$current_user = 'null';
-	foreach($users as $user)
-	{
-	  if($username == $user->Name){
-	  	$current_user = $user;
-	  	break;
-	  }
-	}
-	$photoDataPath = "./ckcycling/json/photoData.txt";
-	if(!file_exists($photoDataPath)){
-	  file_put_contents($photoDataPath, '[]');
-	}
 echo '<html>
 <head>
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -30,16 +16,9 @@ echo '<html>
 	<script type="text/javascript" src="./ckcycling/js/leaflet.markercluster-src.js"></script>
 	<script type="text/javascript" src="./ckcycling/js/arrows.js"></script>
 	<script type="text/javascript" src="./ckcycling/js/photos.js"></script>
+	<script type="text/javascript" src="./ckcycling/js/authorize.js"></script>
 </head>
 <body>
-	<script type="text/javascript">
-		const user = {
-			id: "'.$current_user->Id.'",
-			name: "'.$current_user->Name.'",
-			permissions: "'.$current_user->Permissions.'"
-		};
-		let photos = '.file_get_contents($photoDataPath).';
-	</script>
 	<h1>CKCYCLING TOURS</h1>
 	<div id="controls">
 		<!--TODO: multiselect with https://www.cssscript.com/filterable-checkable-multi-select/ -->
